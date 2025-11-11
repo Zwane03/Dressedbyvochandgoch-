@@ -1,0 +1,41 @@
+CREATE DATABASE IF NOT EXISTS dressedbyvochandgoch;
+USE dressedbyvochandgoch;
+
+CREATE TABLE IF NOT EXISTS bookings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  customer VARCHAR(100),
+  datetime DATETIME,
+  service VARCHAR(100),
+  status VARCHAR(20) DEFAULT 'Pending'
+);
+
+CREATE TABLE IF NOT EXISTS designs (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  price DECIMAL(10,2),
+  description TEXT,
+  image VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS messages (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  customer_name VARCHAR(100),
+  message TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS sales (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  item VARCHAR(100),
+  qty INT DEFAULT 1,
+  amount DECIMAL(10,2),
+  description VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS collections (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  customer VARCHAR(100),
+  items VARCHAR(255),
+  pickup DATE
+);
