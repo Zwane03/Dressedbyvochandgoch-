@@ -1,0 +1,10 @@
+:root{
+  --black:#0f0f0f;
+  --white:#ffffff;
+  --muted:#bfbfbf;
+  --card-radius:14px;
+  --accent:#111;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial;background:var(--white);color:#111}
+/* rest of CSS copied from HTML style block */
