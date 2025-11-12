@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Dressedbyvochandgoch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Dressedbyvochandgoch</h1>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="catalogues.html">Catalogues</a>
+            <a href="bookings.html" class="active">Book Appointment</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="appointment">
+            <h2>Book a Fitting or Consultation </h2>
+            <p>Schedule a personalized appointment with our stylists for measurements, fittings, or to explore our collections in person.</p>
+            
+            <form id="bookingForm">
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                 <div class="form-group">
+                    <label for="phone">Phone Number:</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="service">Type of Appointment:</label>
+                    <select id="service" name="service" required>
+                        <option value="">--Please choose an option--</option>
+                        <option value="measurement">Measurements</option>
+                        <option value="fitting">Fitting Session</option>
+                        <option value="consultation">Viewing & Consultation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="date">Preferred Date:</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                 <div class="form-group">
+                    <label for="notes">Notes (e.g., specific dress or collection):</label>
+                    <textarea id="notes" name="notes" rows="4"></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Request Appointment</button>
+            </form>
+            <p id="confirmationMessage"></p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Dressedbyvochandgoch. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            
+            if (name && service && date) {
+                const confirmation = document.getElementById('confirmationMessage');
+                confirmation.textContent = `Thank you, ${name}! Your request for a ${service} on ${date} has been received. We will contact you shortly to confirm.`;
+                document.getElementById('bookingForm').reset();
+            } else {
+                 alert('Please fill out all required fields.');
+            }
+        });
+    </script>
+
+</body>
+</html>

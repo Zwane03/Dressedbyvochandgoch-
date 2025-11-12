@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collections - Dressedbyvochandgoch</title>
+
+    <style>
+        /* --- Google Fonts Import --- */
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Lato:wght@300;400&display=swap');
+
+        /* --- General Reset & Body Styles --- */
+        body {
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            margin: 0;
+            padding: 0;
+            background-color: #fdfdfd;
+            color: #1a1a1a;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            overflow: hidden;
+            padding: 20px 40px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            text-align: center;
+            color: #1a1a1a;
+            margin: 0;
+        }
+
+        /* Styles copied from user input */
+        header h1 {
+            font-size: 2.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        h3 {
+            font-size: 1.8rem; /* Adjusted for section headers */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            margin-top: 40px;
+        }
+
+        p {
+            text-align: center;
+            max-width: 700px;
+            margin: 15px auto 40px auto;
+            font-size: 1.1rem;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            padding: 60px 0 30px 0;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        nav {
+            background: #fdfdfd;
+            padding: 25px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+            nav a {
+                color: #1a1a1a;
+                text-decoration: none;
+                margin: 0 25px;
+                font-size: 1rem;
+                font-weight: 400;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                transition: color 0.4s ease;
+                padding-bottom: 5px;
+                border-bottom: 2px solid transparent;
+            }
+
+                nav a:hover {
+                    color: #b39970;
+                }
+
+                nav a.active {
+                    color: #1a1a1a;
+                    border-bottom: 2px solid #1a1a1a;
+                }
+
+        /* --- Slideshow Styles --- */
+        .slideshow-container {
+            max-width: 100%;
+            position: relative;
+            margin: 40px auto 0 auto;
+            overflow: hidden;
+            border-radius: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            cursor: grab;
+        }
+
+        .mySlides {
+            display: none;
+            width: 100%;
+            position: relative;
+            text-align: center;
+        }
+
+            /* *** THE FIX FOR STRETCHING IS HERE *** The image itself should not be forced to 100% width, but its container should.
+        We ensure the image is allowed to take up the full width, but must maintain its aspect ratio.
+        */
+            .mySlides img {
+                max-width: 100%; /* Ensure it doesn't exceed the container width */
+                height: auto; /* CRITICAL: Allows the height to scale proportionally with the width */
+                object-fit: contain; /* Ensures the image aspect ratio is maintained within the slide area */
+                max-height: 800px;
+                display: block;
+                margin: 0 auto;
+            }
+
+        /* Next & previous buttons */
+        .prev, .next {
+            cursor: pointer;
+            position: absolute;
+            top: 50%;
+            width: auto;
+            padding: 18px;
+            margin-top: -30px;
+            color: #fdfdfd;
+            font-weight: bold;
+            font-size: 24px;
+            transition: 0.6s ease;
+            user-select: none;
+            background-color: rgba(26, 26, 26, 0.6);
+            border-radius: 0;
+            z-index: 10;
+        }
+
+        /* Position the "next button" to the right */
+        .next {
+            right: 0;
+        }
+
+            /* On hover, add a black background with a little opacity */
+            .prev:hover, .next:hover {
+                background-color: rgba(179, 153, 112, 0.8); /* Accent hover */
+            }
+
+        /* The dots/bullets/indicators container */
+        .dots-container {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 40px;
+        }
+
+        /* The dots/bullets/indicators */
+        .dot {
+            cursor: pointer;
+            height: 10px;
+            width: 10px;
+            margin: 0 5px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.6s ease;
+        }
+
+            .active-dot, .dot:hover {
+                background-color: #b39970; /* Muted gold accent */
+            }
+
+        /* Fade animation for slides */
+        .fade {
+            animation-name: fade;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes fade {
+            from {
+                opacity: .4
+            }
+
+            to {
+                opacity: 1
+            }
+        }
+
+        /* Mobile adjustment for navigation buttons */
+        @media (max-width: 600px) {
+            .prev, .next {
+                font-size: 18px;
+                padding: 12px;
+                margin-top: -20px;
+            }
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 60px 20px;
+            background: #fdfdfd;
+            color: #888;
+            margin-top: 60px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Dressedbyvochandgoch</h1>
+    </header>
+
+    <nav>
+        <div class="container">
+            <a href="index.html">Home</a>
+            <a href="catalogues.html" class="active">Catalogues</a>
+            <a href="bookings.html">Book Appointment</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Our Exclusive Collections</h2>
+
+        <section id="luxe" class="mb-16">
+            <h3>Luxe Custom-Design</h3>
+            <p>Experience the pinnacle of personalization. Our Luxe Custom-Design service transforms your vision into a wearable masterpiece, handcrafted with the finest materials.</p>
+
+            <div class="slideshow-container" data-category="luxe">
+                <div class="mySlides fade" data-slide="luxe-1">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\luxe 1.jpg" alt="luxe Dress 1">
+                </div>
+                <div class="mySlides fade" data-slide="luxe-2">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\luxe 2.jpg" alt="luxe Dress 2">
+                </div>
+                <div class="mySlides fade" data-slide="luxe-3">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\luxe 3.jpg" alt="luxe Dress 3">
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1, 'luxe')">&#10094;</a>
+                <a class="next" onclick="plusSlides(1, 'luxe')">&#10095;</a>
+            </div>
+            <div class="dots-container" data-category="luxe">
+                <span class="dot" onclick="currentSlide(1, 'luxe')"></span>
+                <span class="dot" onclick="currentSlide(2, 'luxe')"></span>
+                <span class="dot" onclick="currentSlide(3, 'luxe')"></span>
+            </div>
+        </section>
+
+        <section id="evening" class="mb-16">
+            <h3>Evening Wear</h3>
+            <p>Make an unforgettable entrance. Our Evening Wear collection features glamorous gowns and sophisticated attire perfect for galas, red carpets, and special occasions.</p>
+
+            <div class="slideshow-container" data-category="evening">
+                <div class="mySlides fade" data-slide="evening-1">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\evening 1.jpg" alt="evening Dress 1">
+                </div>
+                <div class="mySlides fade" data-slide="evening-2">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\evening 2.jpg" alt="evening Dress 2">
+                </div>
+                <div class="mySlides fade" data-slide="evening-3">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\evening 3.jpg" alt="evening Dress 3">
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1, 'evening')">&#10094;</a>
+                <a class="next" onclick="plusSlides(1, 'evening')">&#10095;</a>
+            </div>
+            <div class="dots-container" data-category="evening">
+                <span class="dot" onclick="currentSlide(1, 'evening')"></span>
+                <span class="dot" onclick="currentSlide(2, 'evening')"></span>
+                <span class="dot" onclick="currentSlide(3, 'evening')"></span>
+            </div>
+        </section>
+
+        <section id="bridal" class="mb-16">
+            <h3>Bridal Wear</h3>
+            <p>From traditional elegance to modern chic, find the dress of your dreams. Our Bridal collection offers stunning gowns and accessories for your perfect wedding day.</p>
+
+            <div class="slideshow-container" data-category="bridal">
+                <div class="mySlides fade" data-slide="bridal-1">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\bridal 1.jpg" alt="bridal Dress 1">
+                </div>
+                <div class="mySlides fade" data-slide="bridal-2">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\bridal 2.jpg" alt="bridal Dress 2">
+                </div>
+                <div class="mySlides fade" data-slide="bridal-3">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\bridal 3.jpg" alt="bridalDress 3">
+                </div>
+                <a class="prev" onclick="plusSlides(-1, 'bridal')">&#10094;</a>
+                <a class="next" onclick="plusSlides(1, 'bridal')">&#10095;</a>
+            </div>
+            <div class="dots-container" data-category="bridal">
+                <span class="dot" onclick="currentSlide(1, 'bridal')"></span>
+                <span class="dot" onclick="currentSlide(2, 'bridal')"></span>
+                <span class="dot" onclick="currentSlide(3, 'bridal')"></span>
+            </div>
+        </section>
+
+        <section id="prom" class="mb-16">
+            <h3>Prom</h3>
+            <p>Shine on your big night! Our Prom collection features the latest trends, vibrant colors, and show-stopping silhouettes designed to make you feel like royalty.</p>
+
+            <div class="slideshow-container" data-category="prom">
+                <div class="mySlides fade" data-slide="prom-1">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\matric 1.jpg" alt="Prom Dress 1: Red sequined gown with a high slit.">
+                </div>
+                <div class="mySlides fade" data-slide="prom-2">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\matric 2.jpg" alt="Prom Dress 2: Silver sequined gown with a deep V-neck and ruffled shoulder detail.">
+                </div>
+                <div class="mySlides fade" data-slide="prom-3">
+                    <img src="C:\Users\junio\OneDrive\Desktop\project\code\matric 3.jpg" alt="Prom Dress 3: Black sequined mermaid gown with an asymmetrical shoulder design.">
+                </div>
+
+                <a class="prev" onclick="plusSlides(-1, 'prom')">&#10094;</a>
+                <a class="next" onclick="plusSlides(1, 'prom')">&#10095;</a>
+            </div>
+            <div class="dots-container" data-category="prom">
+                <span class="dot" onclick="currentSlide(1, 'prom')"></span>
+                <span class="dot" onclick="currentSlide(2, 'prom')"></span>
+                <span class="dot" onclick="currentSlide(3, 'prom')"></span>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2025 Dressedbyvochandgoch. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        // Object to hold the current slide index for each category
+        const slideIndex = {
+            'luxe': 1,
+            'evening': 1,
+            'bridal': 1,
+            'prom': 1
+        };
+
+        // --- Core Slideshow Functions ---
+
+        // Function to move slides forward/backward
+        function plusSlides(n, category) {
+            showSlides(slideIndex[category] += n, category);
+        }
+
+        // Function to jump to a specific slide
+        function currentSlide(n, category) {
+            showSlides(slideIndex[category] = n, category);
+        }
+
+        // Core function to display the correct slide for a given category
+        function showSlides(n, category) {
+            const container = document.querySelector(`.slideshow-container[data-category="${category}"]`);
+            const slides = container.querySelectorAll('.mySlides');
+            const dots = document.querySelector(`.dots-container[data-category="${category}"]`).querySelectorAll('.dot');
+
+            if (n > slides.length) {
+                slideIndex[category] = 1;
+            }
+            if (n < 1) {
+                slideIndex[category] = slides.length;
+            }
+
+            // Hide all slides
+            slides.forEach(slide => slide.style.display = 'none');
+
+            // Remove 'active-dot' class from all dots
+            dots.forEach(dot => dot.classList.remove('active-dot'));
+
+            // Display the current slide and mark the current dot as active
+            slides[slideIndex[category] - 1].style.display = 'block';
+            dots[slideIndex[category] - 1].classList.add('active-dot');
+        }
+
+        // --- Swipe Functionality ---
+
+        // Global variable to store the initial X touch position
+        let xDown = null;
+
+        function handleTouchStart(evt) {
+            // Get the X coordinate of the touch point
+            xDown = evt.touches[0].clientX;
+        }
+
+        function handleTouchEnd(evt) {
+            if (xDown === null) {
+                return;
+            }
+
+            const container = evt.currentTarget;
+            const category = container.getAttribute('data-category');
+
+            // Get the final X position from the point where the finger lifted
+            const xUp = evt.changedTouches[0].clientX;
+
+            const xDiff = xDown - xUp;
+            const SWIPE_THRESHOLD = 50; // Minimum distance (in pixels) to register as a swipe
+
+            if (Math.abs(xDiff) > SWIPE_THRESHOLD) {
+                if (xDiff > 0) {
+                    // Swipe left: moves to the NEXT slide (plusSlides(1))
+                    plusSlides(1, category);
+                } else {
+                    // Swipe right: moves to the PREVIOUS slide (plusSlides(-1))
+                    plusSlides(-1, category);
+                }
+            }
+
+            // Reset X coordinate tracking after the interaction
+            xDown = null;
+        }
+
+        function addSwipeListeners(container) {
+            // Use passive: true for touchstart/touchend for better scrolling performance
+            container.addEventListener('touchstart', handleTouchStart, { passive: true });
+            container.addEventListener('touchend', handleTouchEnd, { passive: true });
+            // Note: touchmove is not strictly required for this simple swipe detection
+        }
+
+
+        // --- Initialization ---
+        window.onload = function () {
+            const slideshowContainers = document.querySelectorAll('.slideshow-container');
+
+            // Initialize all slideshows (set first slide as active)
+            Object.keys(slideIndex).forEach(category => {
+                showSlides(slideIndex[category], category);
+            });
+
+            // Attach swipe listeners to all slideshow containers
+            slideshowContainers.forEach(container => {
+                addSwipeListeners(container);
+            });
+        };
+    </script>
+
+</body>
+</html>
