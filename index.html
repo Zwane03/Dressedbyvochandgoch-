@@ -197,7 +197,7 @@
         <div class="modal-content">
             <span class="close-button">&times;</span>
             
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="login.php">
                 <h2>Login</h2>
                 <div class="form-group">
                     <label for="loginEmail">Email:</label>
@@ -211,7 +211,7 @@
                 <a class="form-switch-link" data-target="signupForm">Need an account? Sign Up!</a>
             </form>
 
-            <form id="signupForm" style="display:none;">
+            <form id="signupForm" style="display:none;" method="POST" action="signup.php">
                 <h2>Create Account</h2>
                 <div class="form-group">
                     <label for="signupName">Full Name:</label>
@@ -307,70 +307,9 @@
             });
         });
         
-        // --- Login/Signup Handlers (Simulated) ---
-        loginForm.onsubmit = function(event) {
-            event.preventDefault();
-            const name = "Vanessa O'Connell"; 
-            const email = event.target.loginEmail.value;
-            setLoggedInState(name, email);
-            modal.style.display = "none";
-        }
+       
 
-        signupForm.onsubmit = function(event) {
-            event.preventDefault();
-            const fullName = event.target.signupName.value;
-            const email = event.target.signupEmail.value;
-            const password = event.target.signupPassword.value;
-
-            // 1. Prepare data to send to the server
-            const userData = {
-                fullName: fullName,
-                email: email,
-                password: password // The server will hash this securely
-            };
-
-            // 2. Send the data to your server's registration endpoint
-            // You MUST replace 'YOUR_SERVER_URL/api/register' with your actual server address
-            fetch('YOUR_SERVER_URL/api/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData)
-            })
-                .then(response => {
-                    // Check if the server responded successfully (Status 201 Created or 200 OK)
-                    if (response.ok) {
-                        return response.json();
-                    }
-                    // Handle errors from the server (e.g., email already exists)
-                    throw new Error('Registration failed. Please try again or check if email is taken.');
-                })
-                .then(data => {
-                    // 3. If the server successfully created the user:
-                    alert("Account created successfully! You are now logged in.");
-
-                    // For demonstration, we simulate login with the newly created details
-                    // In a real app, the server returns a token/session info.
-                    setLoggedInState(fullName, email);
-                    modal.style.display = "none";
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert("Error during signup: " + error.message);
-                });
-        }
-
-        // --- IMPORTANT: Login handler still uses simulation ---
-        loginForm.onsubmit = function (event) {
-            event.preventDefault();
-            // This needs to be updated to use a server endpoint as well!
-            const name = "Vanessa O'Connell";
-            const email = event.target.loginEmail.value;
-            setLoggedInState(name, email);
-            modal.style.display = "none";
-            alert("Login Simulated. Connect this handler to your server for real authentication.");
-        }
+        
 
         // --- Profile Menu Dropdown Logic ---
         profileIcon.onclick = function() {
