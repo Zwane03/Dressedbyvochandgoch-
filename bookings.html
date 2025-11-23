@@ -229,20 +229,37 @@
         });
 
         // --- Booking Form Logic (Existing) ---
-        document.getElementById('bookingForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const name = document.getElementById('name').value;
-            const service = document.getElementById('service').value;
-            const date = document.getElementById('date').value;
-            
-            if (name && service && date) {
-                const confirmation = document.getElementById('confirmationMessage');
-                confirmation.textContent = `Thank you, ${name}! Your request for a ${service} on ${date} has been received. We will contact you shortly to confirm.`;
-                document.getElementById('bookingForm').reset();
-            } else {
-                 alert('Please fill out all required fields.');
-            }
-        });
+
+document.getElementById('bookingForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        service: document.getElementById('service').value,
+        date: document.getElementById('date').value,
+        notes: document.getElementById('notes').value
+    };
+
+    // Send data to PHP
+    fetch('submit_booking.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        const confirmation = document.getElementById('confirmationMessage');
+        confirmation.style.color = "green";
+        confirmation.textContent = `Success! Booking Ref: ${data.ref}. We will contact you shortly.`;
+        document.getElementById('bookingForm').reset();
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert("There was an error saving your booking.");
+    });
+});
 
         // --- Initialization ---
         window.onload = loadUser;
@@ -251,3 +268,4 @@
 
 </body>
 </html>
+
