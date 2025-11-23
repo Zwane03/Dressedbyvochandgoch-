@@ -65,11 +65,13 @@
             font-size: 1.1rem;
         }
 
-        /* --- Header & Navigation --- */
+        /* --- Header & Navigation (UPDATED FOR LOGIN/PROFILE) --- */
         header {
-            padding: 60px 0 30px 0;
-            text-align: center;
-            border-bottom: 1px solid #e0e0e0;
+            display: flex; /* Added for alignment */
+            justify-content: space-between; /* Added for alignment */
+            align-items: center; /* Added for alignment */
+            padding: 10px 20px; /* Reduced top/bottom padding to 10px */
+            border-bottom: none; /* Assuming nav handles the border now */
         }
 
         nav {
@@ -104,6 +106,56 @@
                     border-bottom: 2px solid #1a1a1a;
                 }
 
+        /* --- LOGIN/PROFILE STYLES --- */
+        .login-container, .profile-container {
+            margin-left: auto;
+            position: relative;
+        }
+        .profile-container {
+            display: none; /* Hidden by default */
+        }
+        .login-button {
+            background-color: #555;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+        }
+        .profile-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #d15a7f;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+        .profile-menu {
+            display: none; 
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            border-radius: 5px;
+            width: 200px;
+            padding: 10px;
+            z-index: 100;
+        }
+        .profile-menu p { margin: 5px 0; padding: 0 5px; font-size: 14px; }
+        .profile-menu p.name { font-weight: bold; border-bottom: 1px solid #eee; padding-bottom: 8px; margin-bottom: 8px; }
+        .profile-menu button { width: 100%; padding: 8px; margin-top: 5px; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; }
+        .profile-menu button:nth-child(3) { background-color: #007bff; color: white; }
+        .profile-menu button:last-child { background-color: #dc3545; color: white; }
+
         /* --- Slideshow Styles --- */
         .slideshow-container {
             max-width: 100%;
@@ -122,13 +174,10 @@
             text-align: center;
         }
 
-            /* *** THE FIX FOR STRETCHING IS HERE *** The image itself should not be forced to 100% width, but its container should.
-        We ensure the image is allowed to take up the full width, but must maintain its aspect ratio.
-        */
             .mySlides img {
-                max-width: 100%; /* Ensure it doesn't exceed the container width */
-                height: auto; /* CRITICAL: Allows the height to scale proportionally with the width */
-                object-fit: contain; /* Ensures the image aspect ratio is maintained within the slide area */
+                max-width: 100%; 
+                height: auto; 
+                object-fit: contain; 
                 max-height: 800px;
                 display: block;
                 margin: 0 auto;
@@ -227,11 +276,26 @@
 
     <header>
         <h1>Dressedbyvochandgoch</h1>
+        
+        <div class="login-container" id="loginButtonContainer">
+            <a href="login.html" class="login-button">Login / Sign Up</a>
+        </div>
+        
+        <div class="profile-container" id="profileContainer">
+            <div class="profile-icon" id="profileIcon">A</div>
+            
+            <div class="profile-menu" id="profileMenu">
+                <p class="name" id="menuFullName">Guest Name</p>
+                <p id="menuEmail">guest@example.com</p>
+                <button onclick="alert('Redirecting to Update Details Page...')">Update Details</button>
+                <button onclick="logOutUser()">Log Out</button>
+            </div>
+        </div>
     </header>
 
     <nav>
         <div class="container">
-            <a href="index.html">Home</a>
+            <a href="client_index.html">Home</a>
             <a href="catalogues.html" class="active">Catalogues</a>
             <a href="bookings.html">Book Appointment</a>
         </div>
@@ -346,7 +410,67 @@
     </footer>
 
     <script>
-        // Object to hold the current slide index for each category
+        // --- Authentication & Profile Logic ---
+        const loginContainer = document.getElementById("loginButtonContainer");
+        const profileContainer = document.getElementById("profileContainer");
+        const profileIcon = document.getElementById("profileIcon");
+        const profileMenu = document.getElementById("profileMenu");
+        const menuFullName = document.getElementById("menuFullName");
+        const menuEmail = document.getElementById("menuEmail");
+
+        const STORAGE_KEY = 'currentUser';
+        let user = null; 
+
+        function loadUser() {
+            const storedUser = localStorage.getItem(STORAGE_KEY);
+            if (storedUser) {
+                user = JSON.parse(storedUser);
+                setLoggedInState(user.fullName, user.email);
+            }
+        }
+        
+        function updateHeaderState() {
+            if (user) {
+                loginContainer.style.display = 'none';
+                profileContainer.style.display = 'block';
+            } else {
+                loginContainer.style.display = 'block';
+                profileContainer.style.display = 'none';
+                profileMenu.style.display = 'none'; 
+            }
+        }
+
+        function setLoggedInState(name, email) {
+            user = { fullName: name, email: email };
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
+            
+            const initial = name.charAt(0).toUpperCase();
+            profileIcon.textContent = initial;
+            menuFullName.textContent = name;
+            menuEmail.textContent = email;
+            updateHeaderState();
+        }
+
+        function logOutUser() {
+            user = null;
+            localStorage.removeItem(STORAGE_KEY); 
+            updateHeaderState();
+            alert("You have been logged out.");
+        }
+
+        // --- Profile Menu Dropdown Logic ---
+        profileIcon.onclick = function(event) {
+            event.stopPropagation();
+            profileMenu.style.display = profileMenu.style.display === 'block' ? 'none' : 'block';
+        }
+        
+        document.addEventListener('click', function(event) {
+            if (user && profileMenu.style.display === 'block' && !profileContainer.contains(event.target)) {
+                profileMenu.style.display = 'none';
+            }
+        });
+        
+        // --- Slideshow Logic ---
         const slideIndex = {
             'luxe': 1,
             'evening': 1,
@@ -354,19 +478,14 @@
             'prom': 1
         };
 
-        // --- Core Slideshow Functions ---
-
-        // Function to move slides forward/backward
         function plusSlides(n, category) {
             showSlides(slideIndex[category] += n, category);
         }
 
-        // Function to jump to a specific slide
         function currentSlide(n, category) {
             showSlides(slideIndex[category] = n, category);
         }
 
-        // Core function to display the correct slide for a given category
         function showSlides(n, category) {
             const container = document.querySelector(`.slideshow-container[data-category="${category}"]`);
             const slides = container.querySelectorAll('.mySlides');
@@ -379,24 +498,16 @@
                 slideIndex[category] = slides.length;
             }
 
-            // Hide all slides
             slides.forEach(slide => slide.style.display = 'none');
-
-            // Remove 'active-dot' class from all dots
             dots.forEach(dot => dot.classList.remove('active-dot'));
 
-            // Display the current slide and mark the current dot as active
             slides[slideIndex[category] - 1].style.display = 'block';
             dots[slideIndex[category] - 1].classList.add('active-dot');
         }
 
-        // --- Swipe Functionality ---
-
-        // Global variable to store the initial X touch position
         let xDown = null;
 
         function handleTouchStart(evt) {
-            // Get the X coordinate of the touch point
             xDown = evt.touches[0].clientX;
         }
 
@@ -408,44 +519,39 @@
             const container = evt.currentTarget;
             const category = container.getAttribute('data-category');
 
-            // Get the final X position from the point where the finger lifted
             const xUp = evt.changedTouches[0].clientX;
 
             const xDiff = xDown - xUp;
-            const SWIPE_THRESHOLD = 50; // Minimum distance (in pixels) to register as a swipe
+            const SWIPE_THRESHOLD = 50; 
 
             if (Math.abs(xDiff) > SWIPE_THRESHOLD) {
                 if (xDiff > 0) {
-                    // Swipe left: moves to the NEXT slide (plusSlides(1))
                     plusSlides(1, category);
                 } else {
-                    // Swipe right: moves to the PREVIOUS slide (plusSlides(-1))
                     plusSlides(-1, category);
                 }
             }
 
-            // Reset X coordinate tracking after the interaction
             xDown = null;
         }
 
         function addSwipeListeners(container) {
-            // Use passive: true for touchstart/touchend for better scrolling performance
             container.addEventListener('touchstart', handleTouchStart, { passive: true });
             container.addEventListener('touchend', handleTouchEnd, { passive: true });
-            // Note: touchmove is not strictly required for this simple swipe detection
         }
 
 
         // --- Initialization ---
         window.onload = function () {
+            // Initialize Authentication first
+            loadUser();
+            
+            // Then initialize Slideshows
             const slideshowContainers = document.querySelectorAll('.slideshow-container');
-
-            // Initialize all slideshows (set first slide as active)
             Object.keys(slideIndex).forEach(category => {
                 showSlides(slideIndex[category], category);
             });
 
-            // Attach swipe listeners to all slideshow containers
             slideshowContainers.forEach(container => {
                 addSwipeListeners(container);
             });
